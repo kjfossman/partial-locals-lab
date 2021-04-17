@@ -14,17 +14,26 @@ class Student < ActiveRecord::Base
   has_many :classroom_students
   has_many :classrooms, through: :classroom_students
 
+  # def self.search(query)
+  #   if query.empty?
+  #     Student.all
+  #   else
+  #     students = Student.all.map do |x|
+  #       if x.name.upcase.include?(query.upcase)
+  #         x.name
+  #       end
+  #     end
+  #     binding.pry
+  #     students = students.reject {|name| name.nil?}
+  #     students
+  #   end
+  # end
+
   def self.search(query)
     if query.empty?
       Student.all
-    else
-      students = Student.all.map do |x|
-        if x.name.upcase.include?(query.upcase)
-          x.name
-        end
-      end
-      students = students.reject {|name| name.nil?}
-      students
+    else 
+      where("name LIKE ?", "%#{query}%")
     end
   end
 
